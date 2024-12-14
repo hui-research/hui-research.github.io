@@ -70,7 +70,7 @@ leftBtn.addEventListener('click', () => {
         } 
         else if (currentStep === 4) {
             dialogBox.innerHTML = `
-            <h2>當您準備好時，請點擊「開始」按鈕，研究將正式開始。</h2>
+            <h2>當您準備好時，請點擊「開始」按鈕，研究將正式開始</h2>
             <p>再次感謝您的參與,期待與您共同邁向更多發現!</p>
             `;
             leftBtn.textContent = "開始";
