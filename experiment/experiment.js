@@ -6,7 +6,7 @@ if(true){ // normal mode
 }
 else{ // debug mode
   console.log("現在時間用的是debug設定檔")
-  var time_settings = [1000,3000,1000,1000,800,200,1000,1000,60000,15000000];
+  var time_settings = [1000,3000,100000,1000,800,200,1000,1000,60000,15000000];
 }
 
 var terminate = false // if true 就是已經終止研究
@@ -270,7 +270,7 @@ var invest_game = {
 var cauculating = {
   type: jsPsychHtmlKeyboardResponse, // 隨便找一個type 但是不給他choices就好
   choices: "NO_KEYS",
-  stimulus: "回饋金額計算中...",
+  stimulus: "<p>回饋金額計算中...</p>",
   trial_duration: time_settings[2]
 };
 
@@ -584,7 +584,7 @@ var invest_game_queue_poor_6_10 = {
 /**
  * 💰💰💰💰
  * 正式正式正式正式正式正式
- * 投資實驗 part1、2 第11到16輪
+ * 投資實驗 part1、2 第11到15輪
  * 💵💵💵💵
  */
 var invest_game_queue_rich_11_15 = {

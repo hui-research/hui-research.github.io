@@ -143,7 +143,22 @@ function upload_to_parent_window(to_parent_payload){
     );
 }
 
+// ======baseLEC5第十七題邏輯=============================================================================================
 
+function update_17(){
+    var section1 = document.getElementById('section1');
+    var LEC_Q17 = document.querySelector('input[name="LEC_Q17"][value="f"]:checked');
+    if (LEC_Q17 === null){ // 第十七題不是填f
+        require_fill_section2.unshift("LEC_Q17_1")
+        require_fill_section2.unshift("LEC_Q17_2")
+        section1.classList.remove('hide')
+    }
+    else{
+        section1.classList.add('hide')
+        require_fill_section2 = require_fill_section2.filter(item => item !== "LEC_Q17_1");
+        require_fill_section2 = require_fill_section2.filter(item => item !== "LEC_Q17_2");
+    }
+}
 // =========================================================================================================
 
 // 組別分派邏輯
@@ -152,6 +167,7 @@ function upload_to_parent_window(to_parent_payload){
 // 在每一次使用者點擊時都有機會可以刷新分組
 function group_update_listener(){
     document.getElementById('base_LEC5').addEventListener('click', function(e) {
+        update_17(); // 第十七題判斷17-1 17-2要不要出現的邏輯
         var section2 = document.getElementById('section2');
         if (checkHC()){
             console.log("分配組別HC"); // 選擇6-11、14、16-21題
@@ -417,23 +433,23 @@ function no_return_event(){
 **/
 function after_agree_noneed_listener(){
     // 對表格中的 checkbox 添加事件監聽
-    document.querySelectorAll('input[type="checkbox"]')[0].addEventListener('change', function () {
+    document.querySelectorAll('input[type="checkbox"]')[2].addEventListener('change', function () {
         if (this.checked === true) {
             // 如果勾選都不要，那麼 都不要 就取消勾選
-            document.querySelectorAll('input[type="checkbox"]')[2].checked = false
+            document.querySelectorAll('input[type="checkbox"]')[0].checked = false
         } 
     })
     document.querySelectorAll('input[type="checkbox"]')[1].addEventListener('change', function () {
         if (this.checked === true) {
             // 如果勾選要，那麼 都不要 就取消勾選
-            document.querySelectorAll('input[type="checkbox"]')[2].checked = false
+            document.querySelectorAll('input[type="checkbox"]')[0].checked = false
         } 
     })
-    document.querySelectorAll('input[type="checkbox"]')[2].addEventListener('change', function () {
+    document.querySelectorAll('input[type="checkbox"]')[0].addEventListener('change', function () {
         if (this.checked === true) {
             // 如果勾選都不要，那麼其他兩個自動取消勾選
-            document.querySelectorAll('input[type="checkbox"]')[0].checked = false
             document.querySelectorAll('input[type="checkbox"]')[1].checked = false
+            document.querySelectorAll('input[type="checkbox"]')[2].checked = false
         } 
     })
 

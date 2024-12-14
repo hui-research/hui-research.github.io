@@ -256,10 +256,10 @@ function doloop(){
     form_submit(temp_payload)
   }
 
-  else {
+  else {/*
     // 不應該會出現這種狀況
     console.log("錯誤");
-    window.location.href = `../error/error.html`
+    window.location.href = `../404.html`*/
   }
 }
 
