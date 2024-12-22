@@ -103,8 +103,17 @@ leftBtn.addEventListener('click', () => {
           no5do();
           
         }
-
         else if (currentStep === 7){
+          dialogBox.innerHTML = `
+          <h2>感謝您的參與!接下來,請填寫相關問卷,整個過程大約需要10至20分鐘。</h2>
+          <h3>在作答過程中,您可以視需要短暫休息,但若填寫時間超過60分鐘,或對部分問題感到猶豫,歡迎隨時來信聯繫我們協助。本問卷無需過度深思或追求完美答案,請依據您的第一直覺作答即可。若對問卷內容有任何疑問,建議先行記錄,並於研究結束後與我們反饋。準備好後,請點擊「下一步」開始作答。</h3>
+          `;
+          rightBtn.classList.add('hide');
+          leftBtn.textContent = "下一步";
+          leftBtn.classList.remove('fade-out');
+
+        }
+        else if (currentStep === 8){
           dialogBox.innerHTML = `
           <h2>接下來，請閱讀知情同意書</h2>
           <h3>研究團隊並建議您下載此文件以便詳閱內容。若您同意參與研究，請勾選『同意』以進入研究。</h3>
@@ -114,7 +123,7 @@ leftBtn.addEventListener('click', () => {
           leftBtn.classList.remove('fade-out');
 
         }
-        else if (currentStep === 8){
+        else if (currentStep === 9){
           form_submit(upload_data);
         }
         else {

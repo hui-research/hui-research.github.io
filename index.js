@@ -8,6 +8,7 @@ var after_agree_json = {} // catch from after_agree 7
 
 var merged_part1 = {}
 var merged_part2 = {}
+var merged_all = {}
 
 var index_counter = 0;
 var assign_group = ""
@@ -42,18 +43,33 @@ function jump_page() {
 }
 
 
-// upload part1
+// upload part1 @return nothing
 function upload_part1() {
   merged_part1 = { ...index_done_before, ...agree_form_json, ...base_survey_json,  ...group_survey_json};
   console.log("正在上傳資料1")
-  return upload_to_gs(1, merged_part1) // 1for第一part
+  upload_to_gs(1, merged_part1).then(result => {
+    if (result) {
+      console.log("資料1上傳成功")
+    } else {
+      console.error("資料1上傳失敗")
+    }
+  });
 }
-// upload part2
+
+// upload part2 @return Promise obj
 function upload_part2() {
   merged_part2 = { ...guide_json, ...exp, ...after_agree_json};
   merged_part2.email = agree_form_json.email
   console.log("正在上傳資料2")
-  return upload_to_gs(2, merged_part2) // 2for第二part
+  return upload_to_gs(2, merged_part2).then(result => {
+    if (result) {
+      console.log("資料2上傳成功");
+      return true
+    } else {
+      console.error("資料2上傳失敗");
+      return false
+    }
+  });
 }
 
 // 子畫面回傳資料後要讓東西去接他
@@ -130,12 +146,19 @@ function payload_process(payload){
     after_agree_json = JSON.parse(JSON.stringify(payload))
     after_agree_json.timestamp_7 = after_agree_json.timestamp
     delete after_agree_json.timestamp;
-    upload_part2()
-    setTimeout(() => {
-      remove_block_reload_event()
-      alert("上傳成功，您可以關閉網頁了") // 注意 這只是定時器，隨時要修正 但是我很懶
-    }, 6000);
-
+    upload_part2().then(result=>{
+      setTimeout(() => {
+        if (result) {
+          frame.contentWindow.postMessage({"status":"true","data":""}, '*');
+          remove_block_reload_event()
+        } 
+        else {
+          merged_all = { ...merged_part1, ...merged_part2};
+          frame.contentWindow.postMessage({"status":"false","data":merged_all}, '*');
+          // alert("上傳失敗，請聯絡我")
+        }
+      }, 1100); // 等待網頁載入，如果直接跳上傳失敗會來不及喘給iframe
+    })
   }
   // part2 上傳
   index_counter++
@@ -183,7 +206,7 @@ function process_exp_data(inputData) {
     counter++
   };
 
-
+/*
   //part2 練習兩次回應內容 時間
   counter = 1;
   for(let i = 147 ; i < 151+1 ; i+=4 ){
@@ -195,11 +218,11 @@ function process_exp_data(inputData) {
     exp[`rtTrust_Prac${counter}`] = inputData.trials[i+2].rt
     counter++
   };
-
+*/
 
   //part2 正式四張臉回應內容 時間
   counter = 1;
-  for(let i = 156 ; i < 168+1 ; i+=4 ){
+  for(let i = 156-9 ; i < 168+1-9 ; i+=4 ){
     exp[`V_${drawpart2_map[counter-1]}`] = inputData.trials[i].response
     exp[`rtV_${drawpart2_map[counter-1]}`] = inputData.trials[i].rt
     exp[`Threat_${drawpart2_map[counter-1]}`] = inputData.trials[i+1].response
@@ -209,8 +232,8 @@ function process_exp_data(inputData) {
     counter++
   };
 
-  exp['P_Trust'] = inputData.trials[172].response.Q0
-
+  exp['P_Trust'] = inputData.trials[172-9].response
+  exp['effort'] = inputData.trials[172-9+1].response
 }
 
 
@@ -229,7 +252,7 @@ function wait_child_listener(){
       jump_page(); // 每次處理後自動跳轉下一頁
     }
     else if (event.data && event.data.action === "save_file_detect") {
-      setTimeout(()=>{upload_to_gs(3, {"ip":_ip, "timestamp":tag_time(), "download":"TRUE"})}, 1000) 
+      // setTimeout(()=>{upload_to_gs(3, {"ip":_ip, "timestamp":tag_time(), "download":"TRUE"})}, 1000) 
       // 疑似是彈窗後block住main thread了 所以設一個timeout
     }
   });

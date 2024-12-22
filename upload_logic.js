@@ -1,5 +1,5 @@
 var url = ""
-var url_base64 = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J5N0tHWFdkVHBWYUJyUUJuamtVaE9KYURaekdKbDFyRzNEbjJGSTdDZEVUZWxnSDRTN0pqS2MtbzZXNzRFSFdlWjgvZXhlYw=="
+var url_base64 = 'aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J5dUhBTkpLcXJmV2xhQ2pTenhaT0FLaVRzMVo4UWR0bnJwWjExZjBVTHdfYlg1ODlscGRsa3AzZTRuUUI5RFptSXkvZXhlYw=='
 
 //====================================================convert===================================================
 url = atob(url_base64) // windows defender可能會因為明碼網址而阻止此檔案下載
@@ -11,7 +11,7 @@ console.log(url)
 function upload_to_gs(upload_part, upload_data){ // json
     upload_data.part = upload_part;
     // 將資料發送到 Google Sheets
-    fetch(url, {
+    return fetch(url, {
       redirect: "follow",
       method: 'POST',
       body: JSON.stringify(upload_data), // 將資料轉換成 JSON 格式
@@ -22,19 +22,15 @@ function upload_to_gs(upload_part, upload_data){ // json
       .then(response => response.text())
       .then(data => {
         if (data === "Success") {
-          console.log("上傳成功"); // 改為輸出中文訊息
-          // return true; // successful
+          return true; // successful
         } 
-        
         else {
           alert("上傳時伺服器回應錯誤，請停止實驗並將此訊息截圖告知實驗者")
-          console.warn("伺服器回應錯誤", data);
-          // return false; // failed
+          return false; // failed
         }
       })
       .catch(error => {
-        console.error('Error:', error)
-        // return false; // failed
+        return false; // failed
       });
 }
 

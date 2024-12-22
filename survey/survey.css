@@ -18,7 +18,12 @@ body {
     margin: 20px auto;
     padding: 20px;
 }
-
+.red-font{
+    color:red;
+}
+.green-font{
+    color:green;
+}
 .survey-container {
     border: 1px solid #ccc;
     padding: 20px;

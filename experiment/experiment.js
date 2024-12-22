@@ -1,21 +1,21 @@
 // 設定秒數，如果是debug的時候可以更改true或false來讓實驗秒數少一點
 
-// var time_settings = [階段,遊戲畫面,回饋畫面計算中，回饋金額顯示,專注點0.8秒,專注點0.2秒,下一位夥伴提示語,情緒評級作業指導語,懸浮視窗5分鐘];
+// var time_settings = [階段,遊戲畫面,回饋畫面計算中, 回饋金額顯示,專注點0.8秒,專注點0.2秒,下一位夥伴提示語,情緒評級作業指導語,懸浮視窗5分鐘,總實驗10分鐘結束];
 if(true){ // normal mode
   var time_settings = [3000,20000,1200,2500,700,200,3000,60000,300000,600000];
 }
 else{ // debug mode
   console.log("現在時間用的是debug設定檔")
-  var time_settings = [1000,1000,1000,1000,600,200,2000,1000,60000,15000000];
+  var time_settings = [200,200,200,200,200,200,200,200,200000,15000000];
 }
 
 var terminate = false // if true 就是已經終止研究
 var show_prompt_already = false;
 var jsPsych = initJsPsych({
   override_safe_mode:true,
-  // show_progress_bar: true, // 需要progress bar嗎?
   on_finish: function() {
     var finish_data_json = jsPsych.data.get() // json
+    console.log(finish_data_json)
     form_submit(finish_data_json)
   },
 });
@@ -32,7 +32,7 @@ var current_slider_value = 0;
 var practice_times = 0;
 var real_times = 0;
 var invest_round = 0;
-var emotion_level_round = 0;
+var emotion_level_round = 2; // 要把練習圖片跳過
 const practice_face_img = ["img/練習圖片1.png", "img/練習圖片2.png"];
 var emotion_face_img = ["img/練習圖片1.png", "img/練習圖片2.png", "img/生氣臉a.png", "img/生氣臉b.png", "img/快樂臉a.png", "img/快樂臉b.png"]
 
@@ -456,7 +456,7 @@ var negative_positive_level = {
     updateSliderValue(); // 更新滑動條顯示值
   },
   stimulus:function(){
-    return `<h1>這個表情的正面或負面程度如何？</h1> <img src="`+ emotion_face_img[emotion_level_round] + `" alt="如果您看見這段文字就代表您的瀏覽器不支援圖片顯示或是網速過慢，此問題請盡快聯繫實驗者" width="500"> `;
+    return `<h1>這個表情的正面或負面程度如何？</h1> <img src="`+ emotion_face_img[emotion_level_round] + `" alt="如果您看見這段文字就代表您的瀏覽器不支援圖片顯示或是網速過慢，此問題請盡快聯繫實驗者" width="500"> <p>非常低<----->非常高</p>`;
   },
   labels: [-4, -3, -2, -1, 0, 1, 2, 3, 4],
   min: -4,
@@ -479,7 +479,7 @@ var feel_threat_level = {
     updateSliderValue(); // 更新滑動條顯示值
   },
   stimulus:function(){
-    return `<h1>這個表情讓您感到威脅的程度如何？</h1> <img src="`+ emotion_face_img[emotion_level_round] + `" alt="如果您看見這段文字就代表您的瀏覽器不支援圖片顯示或是網速過慢，此問題請盡快聯繫實驗者" width="500"> `;
+    return `<h1>這個表情讓您感到威脅的程度如何？</h1> <img src="`+ emotion_face_img[emotion_level_round] + `" alt="如果您看見這段文字就代表您的瀏覽器不支援圖片顯示或是網速過慢，此問題請盡快聯繫實驗者" width="500"> <p>非常低<----->非常高</p>`;
   },
   labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
   min: 0,
@@ -505,7 +505,7 @@ var trust_level = {
     emotion_level_round++;
   },
   stimulus:function(){
-    return `<h1>您信任他/她的程度如何？</h1> <img src="`+ emotion_face_img[emotion_level_round] + `" alt="如果您看見這段文字就代表您的瀏覽器不支援圖片顯示或是網速過慢，此問題請盡快聯繫實驗者" width="500"> `;
+    return `<h1>您信任他/她的程度如何？</h1> <img src="`+ emotion_face_img[emotion_level_round] + `" alt="如果您看見這段文字就代表您的瀏覽器不支援圖片顯示或是網速過慢，此問題請盡快聯繫實驗者" width="500"> <p>非常低<----->非常高</p>`;
   },
   labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
   min: 0,
@@ -521,17 +521,45 @@ var trust_level = {
  * 您認為您的遊戲夥伴是一名真實的人類玩家嗎？（請選擇最符合您感受的選項）
  * **/
 var trust_robot_survey = {
-  type: jsPsychSurveyLikert,
-  questions: [
-    {
-      prompt: '<h2>在這個投資遊戲中，您感受到模擬真實的程度有多高？</h2>',
-      labels: ["完全是人類", "大部分是人類", "不確定", "大部分是電腦", "完全是電腦"],
-      required: true
-    }
-  ],
-  button_label: "確定>>"
-};
+  type: jsPsychHtmlSliderResponse,
+  data: { varname: 'trust_robot_human' },
+  on_load: function() { 
+    updateSliderValue(); // 更新滑動條顯示值
+  },
+  stimulus:function(){
+    return `<h2>在這個投資遊戲中，您感受到模擬真實的程度有多高？</h2>
+    <p>非常低<----->非常高</p>`;
+  },
+  labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+  min: 0,
+  max: 9,
+  slider_start: 5,
+  button_label: '下一步',
+  require_movement: true,
+  prompt: '<p>當前值: <span id="slider-value">0</span></p>',
+}
 
+/** 
+ * 您認為您的遊戲夥伴是一名真實的人類玩家嗎？（請選擇最符合您感受的選項）
+ * **/
+var effort_survey = {
+  type: jsPsychHtmlSliderResponse,
+  data: { varname: 'effort' },
+  on_load: function() { 
+    updateSliderValue(); // 更新滑動條顯示值
+  },
+  stimulus:function(){
+    return `<h2>您的投入程度有多高？</h2>
+    <p>非常低<----->非常高</p>`;
+  },
+  labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+  min: 0,
+  max: 9,
+  slider_start: 5,
+  button_label: '下一步',
+  require_movement: true,
+  prompt: '<p>當前值: <span id="slider-value">0</span></p>',
+}
 
 /** 
  * 全部實驗結束
@@ -683,10 +711,10 @@ timeline.push(emotion_guide)
 timeline.push(emotion_start)
 
 // 練習情緒評估開始提示語
-timeline.push(practice_start)
+// timeline.push(practice_start) // 1個畫面
 
 // 練習兩次情緒評估
-timeline.push(emotion_level_practice_queue);
+// timeline.push(emotion_level_practice_queue); // 8個畫面
 
 // 正式情緒評估開始提示語
 timeline.push(real_start)
@@ -697,7 +725,8 @@ timeline.push(emotion_level_queue);
 //信任機器人遊戲夥伴
 timeline.push(focus_point_800);
 timeline.push(trust_robot_survey);
-
+//投入了多少努力
+timeline.push(effort_survey);
 //結束
 timeline.push(all_exp_done);
 

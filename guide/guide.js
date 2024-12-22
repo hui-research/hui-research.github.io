@@ -103,30 +103,6 @@ function doloop(){
   }
   else if (currentStep === 6) {
     setTimeout(() => {
-      dialog_box.innerHTML = `<h2>規則說明：遊戲開始時，您將於螢幕上看見遊戲夥伴的頭像</h2>
-      <h2>每一輪投資前，您和您的夥伴每人將會各獲得1000元的投資基金，您可以選擇投資任何金額給遊戲夥伴</h2>`
-      show_buttons();
-      show_dialog();
-    },500)
-  }
-  else if (currentStep === 7) {
-    setTimeout(() => {
-      dialog_box.innerHTML = `<h2>一旦投資，金額將會增加三倍（例如：投資5元將變成遊戲夥伴收到15元）</h2>`
-      show_buttons();
-      show_dialog();
-    },500)
-  }
-  else if (currentStep === 8) {
-    setTimeout(() => {
-      dialog_box.innerHTML = `<h2>隨後，遊戲夥伴可以將任何金額回饋給您。</h2>
-      <h2>如此ㄧ來，您和您的遊戲夥伴將有機會合力獲得投資基金額外的獲利。</h2>
-      <h2>每次投資您會立即看見遊戲夥伴的回饋金額，您可以決定用它來調整下一輪的投資。</h2>`
-      show_buttons();
-      show_dialog();
-    },500)
-  }
-  else if (currentStep === 9) {
-    setTimeout(() => {
       dialog_box.innerHTML = `<h2>投資開始前，請您先移動滑桿輸入三個欲投資金額：</h2>
      <h3>（此輪金額不影響後續投資，請您不要停留過久考慮！）</h3>
         <div class="investment-container">
@@ -175,19 +151,46 @@ function doloop(){
     
       },500)
   }
+  else if (currentStep === 7) {
+    if(temp_payload.inv1 === null){
+      // yield results
+      const investment1Amount = parseInt(investment1.value);
+      const investment2Amount = parseInt(investment2.value);
+      const investment3Amount = parseInt(investment3.value);
+      temp_payload.inv1 = investment1Amount;
+      temp_payload.inv2 = investment2Amount;
+      temp_payload.inv3 = investment3Amount;
+      console.log('投資一', investment1Amount);
+      console.log('投資二', investment2Amount);
+      console.log('投資三', investment3Amount);
+      // yield results end
+    }    
+    setTimeout(() => {
+      dialog_box.innerHTML = `<h2>規則說明：遊戲開始時，您將於螢幕上看見遊戲夥伴的頭像</h2>
+      <h2>每一輪投資前，您和您的夥伴每人將會各獲得1000元的投資基金，您可以選擇投資任何金額給遊戲夥伴</h2>`
+      show_buttons();
+      show_dialog();
+    },500)
+  }
+  else if (currentStep === 8) {
+    setTimeout(() => {
+      dialog_box.innerHTML = `<h2>一旦投資，金額將會增加三倍（例如：投資5元將變成遊戲夥伴收到15元）</h2>`
+      show_buttons();
+      show_dialog();
+    },500)
+  }
+  else if (currentStep === 9) {
+    setTimeout(() => {
+      dialog_box.innerHTML = `<h2>隨後，遊戲夥伴可以將任何金額回饋給您。</h2>
+      <h2>如此ㄧ來，您和您的遊戲夥伴將有機會合力獲得投資基金額外的獲利。</h2>
+      <h2>每次投資您會立即看見遊戲夥伴的回饋金額，您可以決定用它來調整下一輪的投資。</h2>`
+      show_buttons();
+      show_dialog();
+    },500)
+  }
+
   else if (currentStep === 10) {
     quizContainer.disabled = true;
-    // yield results
-    const investment1Amount = parseInt(investment1.value);
-    const investment2Amount = parseInt(investment2.value);
-    const investment3Amount = parseInt(investment3.value);
-    temp_payload.inv1 = investment1Amount;
-    temp_payload.inv2 = investment2Amount;
-    temp_payload.inv3 = investment3Amount;
-    console.log('投資一', investment1Amount);
-    console.log('投資二', investment2Amount);
-    console.log('投資三', investment3Amount);
-    // yield results end
 
     setTimeout(() => {
       dialog_box.innerHTML = `
@@ -232,7 +235,7 @@ function doloop(){
       <h2>是否已了解基本遊戲規則呢?</h2>
       <button class="understand-button" onclick="currentStep=13;doloop()">我已了解</button>
       <br>
-      <button class="next-button" onclick="currentStep=5;doloop()">再說一次</button>
+      <button class="next-button" onclick="currentStep=7;doloop()">再說一次</button>
       `
       // show_buttons();
       show_dialog();
