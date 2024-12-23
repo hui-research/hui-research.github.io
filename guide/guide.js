@@ -194,7 +194,7 @@ function doloop(){
 
     setTimeout(() => {
       dialog_box.innerHTML = `
-      <h2>基本遊戲規則說明<br>*這裡以10元投資基金示例</h2>
+      <h2>基本遊戲規則圖示說明<br>*這裡以10元投資基金示例</h2>
       <div class="images-container">
         <div class="image-item">
           <img src="1.png" alt="Image 1">
