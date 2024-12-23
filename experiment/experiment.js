@@ -1,7 +1,7 @@
 // 設定秒數，如果是debug的時候可以更改true或false來讓實驗秒數少一點
 
 // var time_settings = [階段,遊戲畫面,回饋畫面計算中, 回饋金額顯示,專注點0.8秒,專注點0.2秒,下一位夥伴提示語,情緒評級作業指導語,懸浮視窗5分鐘,總實驗10分鐘結束];
-if(true){ // normal mode
+if(false){ // normal mode
   var time_settings = [3000,20000,1200,2500,700,200,3000,60000,300000,600000];
 }
 else{ // debug mode
@@ -456,7 +456,7 @@ var negative_positive_level = {
     updateSliderValue(); // 更新滑動條顯示值
   },
   stimulus:function(){
-    return `<h1>這個表情的正面或負面程度如何？</h1> <img src="`+ emotion_face_img[emotion_level_round] + `" alt="如果您看見這段文字就代表您的瀏覽器不支援圖片顯示或是網速過慢，此問題請盡快聯繫實驗者" width="500"> <p>非常低<----->非常高</p>`;
+    return `<h1>這個表情的正面或負面程度如何？</h1> <img src="`+ emotion_face_img[emotion_level_round] + `" alt="如果您看見這段文字就代表您的瀏覽器不支援圖片顯示或是網速過慢，此問題請盡快聯繫實驗者" width="500"> <p>非常負面<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>非常正面</p>`;
   },
   labels: [-4, -3, -2, -1, 0, 1, 2, 3, 4],
   min: -4,
@@ -479,7 +479,7 @@ var feel_threat_level = {
     updateSliderValue(); // 更新滑動條顯示值
   },
   stimulus:function(){
-    return `<h1>這個表情讓您感到威脅的程度如何？</h1> <img src="`+ emotion_face_img[emotion_level_round] + `" alt="如果您看見這段文字就代表您的瀏覽器不支援圖片顯示或是網速過慢，此問題請盡快聯繫實驗者" width="500"> <p>非常低<----->非常高</p>`;
+    return `<h1>這個表情讓您感到威脅的程度如何？</h1> <img src="`+ emotion_face_img[emotion_level_round] + `" alt="如果您看見這段文字就代表您的瀏覽器不支援圖片顯示或是網速過慢，此問題請盡快聯繫實驗者" width="500"> <p>非常低<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>非常高</p>`;
   },
   labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
   min: 0,
@@ -505,7 +505,7 @@ var trust_level = {
     emotion_level_round++;
   },
   stimulus:function(){
-    return `<h1>您信任他/她的程度如何？</h1> <img src="`+ emotion_face_img[emotion_level_round] + `" alt="如果您看見這段文字就代表您的瀏覽器不支援圖片顯示或是網速過慢，此問題請盡快聯繫實驗者" width="500"> <p>非常低<----->非常高</p>`;
+    return `<h1>您信任他/她的程度如何？</h1> <img src="`+ emotion_face_img[emotion_level_round] + `" alt="如果您看見這段文字就代表您的瀏覽器不支援圖片顯示或是網速過慢，此問題請盡快聯繫實驗者" width="500"> <p>非常低<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>非常高</p>`;
   },
   labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
   min: 0,
@@ -528,7 +528,7 @@ var trust_robot_survey = {
   },
   stimulus:function(){
     return `<h2>在這個投資遊戲中，您感受到模擬真實的程度有多高？</h2>
-    <p>非常低<----->非常高</p>`;
+    <p>非常低<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>非常高</p>`;
   },
   labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
   min: 0,
@@ -549,8 +549,8 @@ var effort_survey = {
     updateSliderValue(); // 更新滑動條顯示值
   },
   stimulus:function(){
-    return `<h2>您的投入程度有多高？</h2>
-    <p>非常低<----->非常高</p>`;
+    return `<h2>在這個投資遊戲中，您的投入程度有多高？</h2>
+    <p>非常低<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>非常高</p>`;
   },
   labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
   min: 0,
