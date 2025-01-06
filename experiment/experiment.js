@@ -33,8 +33,8 @@ var practice_times = 0;
 var real_times = 0;
 var invest_round = 0;
 var emotion_level_round = 2; // 要把練習圖片跳過
-const practice_face_img = ["img/練習圖片1.png", "img/練習圖片2.png"];
-var emotion_face_img = ["img/練習圖片1.png", "img/練習圖片2.png", "img/生氣臉a.png", "img/生氣臉b.png", "img/快樂臉a.png", "img/快樂臉b.png"]
+const practice_face_img = ["img/練習圖片1.jpg", "img/練習圖片2.jpg"];
+var emotion_face_img = ["img/練習圖片1.jpg", "img/練習圖片2.jpg", "img/生氣臉a.jpg", "img/生氣臉b.jpg", "img/快樂臉a.jpg", "img/快樂臉b.jpg"]
 
 
 
@@ -57,12 +57,27 @@ function shuffle_emotion_face_img(){
 
 
 /*預加載*/
+// 同伺服器下載
 var preload = {
   type: jsPsychPreload,
-  images: ["img/練習圖片1.png", "img/練習圖片2.png", "img/生氣臉a.png", "img/生氣臉b.png", "img/快樂臉a.png", "img/快樂臉b.png"]
+  images: ["img/練習圖片1.jpg", "img/練習圖片2.jpg", "img/生氣臉a.jpg", "img/生氣臉b.jpg", "img/快樂臉a.jpg", "img/快樂臉b.jpg"]
 };
 
-
+// google cloud download, not ready
+/*
+const baseURL = "https://drive.google.com/uc?id=";
+var preload = {
+  type: jsPsychPreload,
+  images: [
+    baseURL + "1aUa1KY1hHV69Cir81oLA5CioKuMpOW0C",
+    baseURL + "1pdMFY4T0-K_6AOpk_Gupu-NlxR6Orwg7",
+    baseURL + "1gKGsqKrkQNtbZt2uJ_Or-XMlTWyGmuM2",
+    baseURL + "1ycL4GafupEW2TJ4T9QvSnXtf9vkw8O-3",
+    baseURL + "1-b_PrVthWrE34m8Yd-O3eHNZzynieLLj",
+    baseURL + "1sQnmEaULLVxAq9qzsIbOxDQ01_0KjFQW"
+  ]
+};
+*/
 /** 
  * 練習階段
  * 畫面不動不被影響，3秒後跳脫 
@@ -163,8 +178,8 @@ function invest_poor(){
  */
 function drawImages() {
   // 定義圖片檔案
-  const angryFaces = ["img/生氣臉a.png", "img/生氣臉b.png"];
-  const happyFaces = ["img/快樂臉a.png", "img/快樂臉b.png"];
+  const angryFaces = ["img/生氣臉a.jpg", "img/生氣臉b.jpg"];
+  const happyFaces = ["img/快樂臉a.jpg", "img/快樂臉b.jpg"];
 
   // 隨機抽取一張生氣臉圖片
   const randomAngryFace = angryFaces[Math.floor(Math.random() * angryFaces.length)];
@@ -910,3 +925,54 @@ function upload_to_parent_window(to_parent_payload){
       '*'
   );
 }
+
+
+
+
+//===================================原limit.js=============================================
+/*
+*鎖東鎖西 不讓選取 不讓複製之類的
+*https://wonderland.coderbridge.io/2021/12/30/js-disable-right-mouse-button/
+*/ 
+
+
+function iEsc(){ return false; }
+function iRec(){ return true; }
+function DisableKeys() {
+    if(event.ctrlKey || event.shiftKey || event.altKey)  {
+    window.event.returnValue=false;
+    iEsc();}
+}
+
+document.ondragstart=iEsc;
+document.onkeydown=DisableKeys;
+document.oncontextmenu=iEsc;
+
+if (typeof document.onselectstart !="undefined") document.onselectstart=iEsc;
+else
+{
+    document.onmousedown=iEsc;
+    document.onmouseup=iRec;
+}
+
+function DisableRightClick(e)
+{
+    if (window.Event){ if (e.which == 2 || e.which == 3) iEsc();}
+    else
+        if (event.button == 2 || event.button == 3)
+        {
+            event.cancelBubble = true
+            event.returnValue = false;
+            iEsc();
+        }
+}
+
+// =====================無法返回前一頁==========================
+function no_return_event(){
+    window.history.pushState(null, "", location.href);
+    window.addEventListener("popstate", () => {
+      window.history.pushState(null, "", location.href);
+      alert("此頁不支援返回操作");
+    });
+}
+no_return_event()
